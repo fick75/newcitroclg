@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CITRO | Sistema de Tramites UV</title>
+<meta name="description" content="Sistema digital de solicitudes academicas del Centro de Investigaciones Tropicales, Universidad Veracruzana."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Cabinet+Grotesk:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#07111F; --ink2:#0D1F3C; --ink3:#162E52;
+  --teal:#0A8070; --teal2:#12C4B0; --teal3:#C8F5EF;
+  --gold:#D4860A; --gold2:#F5A623; --gold3:#FFF0CC;
+  --cream:#F5F2EC; --paper:#FCFAF7; --border:#D0DCF0;
+  --text:#0F1E38; --muted:#5E708A; --white:#fff;
+  --pg:#6B35A8; --sc:#1B8050; --pr:#C06010; --oe:#1860B8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--paper);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+.nav{
+  position:fixed;inset:0 0 auto;z-index:300;height:58px;
+  background:rgba(7,17,31,.96);backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;padding:0 48px;
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{
+  width:33px;height:33px;border-radius:7px;background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.9rem;color:var(--ink);
+  box-shadow:0 0 0 3px rgba(212,134,10,.22);
+}
+.logo-text{font-weight:700;font-size:.87rem;color:#fff;line-height:1.2}
+.logo-text small{display:block;font-size:.62rem;color:rgba(255,255,255,.3);font-weight:400}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav-a{padding:6px 12px;border-radius:5px;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.38);transition:.15s}
+.nav-a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.nav-a.on{color:rgba(255,255,255,.8)}
+.nav-btn{
+  margin-left:12px;padding:8px 20px;border-radius:7px;
+  background:var(--teal);color:#fff;font-size:.8rem;font-weight:700;
+  box-shadow:0 2px 16px rgba(10,128,112,.38);transition:.18s;
+}
+.nav-btn:hover{background:var(--teal2);transform:translateY(-1px);box-shadow:0 4px 22px rgba(10,128,112,.55)}
+
+/* HERO */
+.hero{
+  min-height:100vh;background:var(--ink);
+  display:flex;align-items:center;
+  padding:96px 48px 80px;position:relative;overflow:hidden;
+}
+.hero-dots{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.12) 1px,transparent 1px);
+  background-size:36px 36px;opacity:.35;
+}
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+.ga{width:700px;height:700px;background:radial-gradient(circle,rgba(10,128,112,.14) 0%,transparent 58%);right:-170px;top:50%;transform:translateY(-50%)}
+.gb{width:400px;height:400px;background:radial-gradient(circle,rgba(212,134,10,.09) 0%,transparent 60%);left:-40px;bottom:-100px}
+.gc{width:280px;height:280px;background:radial-gradient(circle,rgba(18,196,176,.07) 0%,transparent 65%);left:36%;top:12%}
+
+.hero-in{
+  position:relative;z-index:1;max-width:1140px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;
+}
+
+.h-sup{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.64rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold2);margin-bottom:22px;
+}
+.h-sup::before{content:'';width:22px;height:2px;background:var(--gold2);border-radius:1px}
+h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.8rem;line-height:1.07;font-weight:700;
+  color:#fff;margin-bottom:20px;
+}
+h1 i{font-style:italic;color:var(--gold2)}
+.h-body{font-size:.96rem;color:rgba(255,255,255,.46);line-height:1.82;max-width:440px;margin-bottom:34px}
+.h-btns{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:46px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 26px;border-radius:8px;
+  font-size:.88rem;font-weight:700;transition:.2s;
+}
+.btn-solid{background:var(--teal);color:#fff;box-shadow:0 4px 22px rgba(10,128,112,.44)}
+.btn-solid:hover{background:var(--teal2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(10,128,112,.54)}
+.btn-out{background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.12)}
+.btn-out:hover{background:rgba(255,255,255,.11);color:#fff}
+.h-kpis{display:flex;gap:36px;padding-top:30px;border-top:1px solid rgba(255,255,255,.09)}
+.kpi-n{font-family:'Fira Code',monospace;font-size:1.9rem;color:#fff;font-weight:400;line-height:1;margin-bottom:4px}
+.kpi-l{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+
+/* Floating cards */
+.h-vis{position:relative;height:480px}
+.fcard{position:absolute;border-radius:13px;padding:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.fc-main{width:310px;right:0;top:50%;transform:translateY(-50%);background:rgba(11,22,44,.9);border:1px solid rgba(255,255,255,.13);animation:fa 5.4s ease-in-out infinite}
+.fc-a{width:210px;left:0;top:40px;background:rgba(8,16,34,.88);border:1px solid rgba(255,255,255,.08);animation:fb 6.2s ease-in-out infinite .7s}
+.fc-b{width:200px;left:20px;bottom:40px;background:rgba(8,16,34,.88);border:1px solid rgba(255,255,255,.08);animation:fc 7s ease-in-out infinite 1.3s}
+@keyframes fa{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 11px)) translateX(5px)}}
+@keyframes fb{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes fc{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+.c-bar{display:flex;align-items:center;gap:5px;margin-bottom:11px}
+.c-dot{width:7px;height:7px;border-radius:50%}
+.c-tbar{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;margin-left:7px}
+.c-type{display:inline-flex;align-items:center;gap:4px;font-size:.61rem;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:7px}
+.c-folio{font-family:'Fira Code',monospace;font-size:.65rem;color:var(--gold2);background:rgba(212,134,10,.12);padding:2px 8px;border-radius:3px;display:inline-block;margin-bottom:9px}
+.c-lbl{font-size:.57rem;color:rgba(255,255,255,.24);font-family:'Fira Code',monospace;margin-bottom:2px}
+.c-val{font-size:.68rem;color:rgba(255,255,255,.52);margin-bottom:8px;line-height:1.4}
+.c-ln{height:4px;border-radius:2px;margin-bottom:4px}
+.c-ft{display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.c-ds{width:6px;height:6px;border-radius:50%}
+.c-ftxt{font-size:.59rem;color:rgba(255,255,255,.26)}
+.c-lk{margin-left:auto;font-family:'Fira Code',monospace;font-size:.57rem;color:rgba(12,196,176,.58)}
+
+/* SHARED */
+.wrap{max-width:1140px;margin:0 auto;padding:0 48px}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:.64rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:13px}
+.tag::before{content:'';width:16px;height:2px;border-radius:1px}
+.tag-t{color:var(--teal2)}.tag-t::before{background:var(--teal2)}
+.tag-g{color:var(--gold2)}.tag-g::before{background:var(--gold2)}
+.s-h{font-family:'Cormorant Garamond',serif;font-size:2.5rem;line-height:1.16;font-weight:700;margin-bottom:13px}
+.s-h.wh{color:#fff}.s-h.dk{color:var(--text)}
+.s-p{font-size:.91rem;line-height:1.78;max-width:510px}
+.s-p.wh{color:rgba(255,255,255,.42)}.s-p.dk{color:var(--muted)}
+
+/* FORM TYPES */
+.sec-types{background:var(--ink2);padding:92px 0;position:relative;overflow:hidden}
+.sec-types::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);background-size:36px 36px;opacity:.18;pointer-events:none}
+.types-hdr{margin-bottom:50px;position:relative;z-index:1}
+.types-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative;z-index:1}
+.tc{display:block;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:22px;transition:.22s;position:relative;overflow:hidden}
+.tc::before{content:'';position:absolute;inset:0;opacity:0;transition:.22s}
+.tc-pg::before{background:linear-gradient(140deg,rgba(107,53,168,.16),transparent)}
+.tc-sc::before{background:linear-gradient(140deg,rgba(27,128,80,.16),transparent)}
+.tc-pr::before{background:linear-gradient(140deg,rgba(192,96,16,.16),transparent)}
+.tc-oe::before{background:linear-gradient(140deg,rgba(24,96,184,.16),transparent)}
+.tc:hover::before{opacity:1}
+.tc:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.16);box-shadow:0 20px 56px rgba(0,0,0,.4)}
+.tc-ico{width:50px;height:50px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:13px}
+.tc-ico.pg{background:rgba(107,53,168,.22)}.tc-ico.sc{background:rgba(27,128,80,.22)}
+.tc-ico.pr{background:rgba(192,96,16,.22)}.tc-ico.oe{background:rgba(24,96,184,.22)}
+.tc-name{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:5px}
+.tc-code{font-family:'Fira Code',monospace;font-size:.62rem;padding:1px 6px;border-radius:3px;display:inline-block;margin-bottom:10px}
+.tc-code.pg{background:rgba(107,53,168,.22);color:#C8A0F0}
+.tc-code.sc{background:rgba(27,128,80,.22);color:#88D8A8}
+.tc-code.pr{background:rgba(192,96,16,.22);color:#F8C088}
+.tc-code.oe{background:rgba(24,96,184,.22);color:#88B8F8}
+.tc-fields{font-size:.69rem;color:rgba(255,255,255,.34);line-height:1.85}
+.tc-fields code{font-family:'Fira Code',monospace;font-size:.61rem;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:3px;color:rgba(255,255,255,.5)}
+.tc-arr{margin-top:13px;text-align:right;font-size:.75rem;color:rgba(255,255,255,.2);transition:.2s}
+.tc:hover .tc-arr{color:rgba(255,255,255,.65);transform:translateX(5px)}
+
+/* FEATURES */
+.sec-feat{background:var(--cream);padding:92px 0}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px}
+.feat{background:var(--white);border-radius:12px;padding:26px;border:1px solid var(--border);transition:.22s;position:relative;overflow:hidden}
+.feat::after{content:'';position:absolute;left:0;top:0;width:3px;height:0;background:var(--teal);transition:height .32s}
+.feat:hover::after{height:100%}
+.feat:hover{transform:translateY(-3px);box-shadow:0 12px 38px rgba(10,22,40,.1);border-color:rgba(10,128,112,.18)}
+.feat-ico{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:14px}
+.feat-h{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:7px}
+.feat-p{font-size:.79rem;color:var(--muted);line-height:1.74}
+.pill{display:inline-flex;align-items:center;gap:3px;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-top:10px}
+.p-new{background:rgba(10,128,112,.1);color:var(--teal)}
+.p-adm{background:rgba(107,53,168,.1);color:var(--pg)}
+.p-hot{background:rgba(212,134,10,.1);color:var(--gold)}
+
+/* WORKFLOW */
+.sec-flow{background:var(--white);padding:92px 0}
+.flow-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:52px;position:relative;align-items:start}
+.flow-grid::before{content:'';position:absolute;top:26px;left:calc(10% + 13px);right:calc(10% + 13px);height:1px;background:linear-gradient(90deg,var(--teal),var(--teal2),var(--teal));opacity:.28}
+.flow-step{text-align:center;padding:0 10px;position:relative;z-index:1}
+.flow-n{width:52px;height:52px;border-radius:50%;margin:0 auto 15px;background:linear-gradient(135deg,var(--teal),var(--teal2));display:flex;align-items:center;justify-content:center;font-family:'Fira Code',monospace;font-size:.88rem;color:#fff;box-shadow:0 4px 18px rgba(10,128,112,.34)}
+.flow-h{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:5px}
+.flow-p{font-size:.72rem;color:var(--muted);line-height:1.62}
+
+/* ADMIN */
+.sec-admin{background:linear-gradient(145deg,var(--ink3) 0%,#152A5A 100%);padding:92px 0;position:relative;overflow:hidden}
+.sec-admin::after{content:'ADMIN';position:absolute;right:-56px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:'Cormorant Garamond',serif;font-size:12rem;font-weight:700;color:rgba(255,255,255,.018);pointer-events:none;white-space:nowrap}
+.admin-lay{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1}
+.admin-items{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.ai{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:rgba(255,255,255,.58);line-height:1.55}
+.ai-chk{width:19px;height:19px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(10,128,112,.22);color:var(--teal2);display:flex;align-items:center;justify-content:center;font-size:.62rem}
+.mock-ui{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.09);border-radius:13px;overflow:hidden}
+.mu-hd{background:rgba(0,0,0,.35);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.mu-ttl{font-size:.77rem;font-weight:600;color:#fff}
+.mu-badge{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:1px 6px;border-radius:3px;margin-left:auto}
+.mu-body{padding:12px}
+.mu-row{display:grid;grid-template-columns:96px 1fr 76px 64px;gap:7px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.69rem;color:rgba(255,255,255,.44);align-items:center}
+.mu-row.hdr{font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.mu-folio{font-family:'Fira Code',monospace;color:var(--teal2);font-size:.65rem}
+.mu-st{font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:3px;text-align:center}
+.st-p{background:rgba(212,134,10,.2);color:var(--gold2)}
+.st-r{background:rgba(107,53,168,.2);color:#C8A0F0}
+.st-d{background:rgba(27,128,80,.2);color:#88D8A8}
+.mu-dr{font-family:'Fira Code',monospace;font-size:.59rem;color:var(--teal2)}
+.mu-foot{margin-top:10px;display:flex;gap:7px;flex-wrap:wrap}
+.mu-chip{font-size:.6rem;padding:3px 9px;border-radius:4px}
+.mc-t{background:rgba(10,128,112,.15);color:var(--teal2);font-family:'Fira Code',monospace}
+.mc-g{background:rgba(255,255,255,.06);color:rgba(255,255,255,.3)}
+
+/* FINAL CTA */
+.sec-cta{background:var(--ink);padding:92px 48px;text-align:center;position:relative;overflow:hidden}
+.sec-cta::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);background-size:36px 36px;opacity:.28;pointer-events:none}
+.sec-cta::after{content:'';position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(10,128,112,.13) 0%,transparent 65%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-in{position:relative;z-index:1}
+.cta-in h2{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:#fff;margin-bottom:12px;font-weight:700}
+.cta-in p{font-size:.9rem;color:rgba(255,255,255,.38);margin-bottom:34px}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:#040A16;padding:30px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-ctr{font-size:.71rem;color:rgba(255,255,255,.2);text-align:center;flex:1}
+.foot-mono{font-family:'Fira Code',monospace;font-size:.67rem;color:rgba(255,255,255,.14)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .58s ease,transform .58s ease}
+.rv.on{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.17s}.rv.d3{transition-delay:.26s}.rv.d4{transition-delay:.35s}.rv.d5{transition-delay:.44s}
+
+/* HERO ENTRANCE */
+.hero-copy>*{opacity:0;transform:translateY(16px);animation:hIn .65s ease forwards}
+.hero-copy>:nth-child(1){animation-delay:.06s}
+.hero-copy>:nth-child(2){animation-delay:.16s}
+.hero-copy>:nth-child(3){animation-delay:.27s}
+.hero-copy>:nth-child(4){animation-delay:.38s}
+.hero-copy>:nth-child(5){animation-delay:.47s}
+@keyframes hIn{to{opacity:1;transform:none}}
+.h-vis{opacity:0;animation:hV .9s .36s forwards}
+@keyframes hV{to{opacity:1}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-in,.admin-lay{grid-template-columns:1fr}
+  .h-vis,.sec-admin::after{display:none}
+  .types-grid,.feat-grid{grid-template-columns:1fr 1fr}
+  .flow-grid{grid-template-columns:1fr 1fr}
+  .flow-grid::before{display:none}
+  h1{font-size:2.8rem}
+  .nav{padding:0 18px}
+  .wrap{padding:0 18px}
+}
+@media(max-width:540px){
+  .types-grid,.feat-grid,.flow-grid{grid-template-columns:1fr}
+  h1{font-size:2.1rem}
+  .hero{padding:86px 18px 56px}
+  .h-kpis{gap:18px}
+  .sec-cta{padding-left:18px;padding-right:18px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-mark">C</div>
+    <div class="logo-text">CITRO Tramites<small>Universidad Veracruzana</small></div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-a" href="#tipos">Formularios</a>
+    <a class="nav-a" href="#funciones">Funciones</a>
+    <a class="nav-a" href="#flujo">Flujo</a>
+    <a class="nav-a" href="#admin">Admin</a>
+    <a class="nav-btn" href="CITRO_App.html">Abrir sistema &rarr;</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="glow ga"></div>
+  <div class="glow gb"></div>
+  <div class="glow gc"></div>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <div class="h-sup">Centro de Investigaciones Tropicales &bull; UV</div>
+      <h1>Tramites<br>academicos<br><i>sin papel</i></h1>
+      <p class="h-body">
+        Sistema digital completo para solicitudes del CITRO. Folios automaticos,
+        adjuntos de archivos, envio a CtTramites2026 por correo,
+        acuse de recibo y panel de administracion con Google Drive y Sheets.
+      </p>
+      <div class="h-btns">
+        <a class="btn btn-solid" href="CITRO_App.html">&#8594; Abrir el sistema</a>
+        <a class="btn btn-out" href="#flujo">Como funciona</a>
+      </div>
+      <div class="h-kpis">
+        <div><div class="kpi-n">4</div><div class="kpi-l">Formularios</div></div>
+        <div><div class="kpi-n" style="font-size:1.6rem">&#9729;</div><div class="kpi-l">Drive + Sheets</div></div>
+        <div><div class="kpi-n">&#128231;</div><div class="kpi-l">Correo Teams</div></div>
+      </div>
+    </div>
+
+    <div class="h-vis" aria-hidden="true">
+      <!-- Main card: SC -->
+      <div class="fcard fc-main">
+        <div class="c-bar">
+          <div class="c-dot" style="background:#ff5f56"></div>
+          <div class="c-dot" style="background:#ffbd2e"></div>
+          <div class="c-dot" style="background:#27c93f"></div>
+          <div class="c-tbar"></div>
+        </div>
+        <div class="c-type" style="background:rgba(27,128,80,.2);color:#88D8A8">&#127807; Salida de Campo</div>
+        <div class="c-folio">SC-2025-012</div>
+        <div class="c-lbl">[Lugares]</div>
+        <div class="c-val">Sierra de Chiconquiaco, Las Vigas</div>
+        <div class="c-lbl">[Actividades]</div>
+        <div class="c-ln" style="background:rgba(10,128,112,.3)"></div>
+        <div class="c-ln" style="background:rgba(10,128,112,.3);width:72%"></div>
+        <!-- Adjuntos -->
+        <div style="margin-top:8px;background:rgba(10,128,112,.08);border:1px solid rgba(10,128,112,.2);border-radius:5px;padding:6px 8px">
+          <div style="font-size:.58rem;color:rgba(255,255,255,.38);margin-bottom:4px">&#128206; Adjuntos (2)</div>
+          <div style="font-size:.6rem;color:rgba(255,255,255,.45)">&#128196; cronograma.pdf &nbsp; &#128247; mapa_zona.jpg</div>
+        </div>
+        <div class="c-ft">
+          <div class="c-ds" style="background:#27c93f"></div>
+          <div class="c-ftxt">Enviado a CtTramites2026</div>
+          <div class="c-lk">&#10003; Acuse generado</div>
+        </div>
+      </div>
+      <!-- Card A: PG -->
+      <div class="fcard fc-a">
+        <div class="c-type" style="background:rgba(107,53,168,.2);color:#C8A0F0;font-size:.58rem">&#128233; Peticion General</div>
+        <div class="c-folio" style="color:#C8A0F0;background:rgba(107,53,168,.14)">PG-2025-031</div>
+        <div class="c-ln" style="background:rgba(255,255,255,.07);width:82%"></div>
+        <div class="c-ln" style="background:rgba(255,255,255,.07);width:61%"></div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:8px">
+          <span style="font-size:.56rem;padding:2px 5px;border-radius:3px;background:rgba(212,134,10,.18);color:var(--gold2)">Pendiente</span>
+          <span style="margin-left:auto;font-size:.55rem;color:rgba(255,255,255,.18)">hace 2h</span>
+        </div>
+      </div>
+      <!-- Card B: OE -->
+      <div class="fcard fc-b">
+        <div class="c-type" style="background:rgba(24,96,184,.2);color:#88B8F8;font-size:.58rem">&#127891; Org. Evento</div>
+        <div class="c-folio" style="color:#88B8F8;background:rgba(24,96,184,.14)">OE-2025-007</div>
+        <div class="c-ln" style="background:rgba(255,255,255,.07);width:88%"></div>
+        <div class="c-ln" style="background:rgba(255,255,255,.07);width:54%"></div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:8px">
+          <span style="font-size:.56rem;padding:2px 5px;border-radius:3px;background:rgba(27,128,80,.18);color:#88D8A8">Completado</span>
+          <span style="margin-left:auto;font-size:.55rem;color:rgba(255,255,255,.18)">ayer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM TYPES -->
+<section class="sec-types" id="tipos">
+  <div class="wrap">
+    <div class="types-hdr rv">
+      <div class="tag tag-g">4 tipos de solicitud</div>
+      <h2 class="s-h wh">Cada tramite<br>en su formato correcto</h2>
+      <p class="s-p wh">Campos mapeados a las plantillas oficiales CITRO/UV. Folio correlativo anual independiente por tipo. Todos con zona de adjuntos.</p>
+    </div>
+    <div class="types-grid">
+      <a class="tc tc-pg rv d1" href="CITRO_App.html">
+        <div class="tc-ico pg">&#128233;</div>
+        <div class="tc-name">Peticion General</div>
+        <div class="tc-code pg">PG-YYYY-NNN</div>
+        <div class="tc-fields">Tipo &middot; Descripcion<br>Urgencia &middot; Adjuntos</div>
+        <div class="tc-arr">Abrir &rarr;</div>
+      </a>
+      <a class="tc tc-sc rv d2" href="CITRO_App.html">
+        <div class="tc-ico sc">&#127807;</div>
+        <div class="tc-name">Salida de Campo</div>
+        <div class="tc-code sc">SC-YYYY-NNN</div>
+        <div class="tc-fields"><code>[Nombre y grado]</code> <code>[Lugares]</code><br><code>[Actividades]</code> <code>[Fecha]</code></div>
+        <div class="tc-arr">Abrir &rarr;</div>
+      </a>
+      <a class="tc tc-pr rv d3" href="CITRO_App.html">
+        <div class="tc-ico pr">&#128230;</div>
+        <div class="tc-name">Peticion de Recursos</div>
+        <div class="tc-code pr">PR-YYYY-NNN</div>
+        <div class="tc-fields"><code>[Actividad]</code> <code>[Justificacion]</code><br><code>[Nombre]</code> <code>[Matricula]</code></div>
+        <div class="tc-arr">Abrir &rarr;</div>
+      </a>
+      <a class="tc tc-oe rv d4" href="CITRO_App.html">
+        <div class="tc-ico oe">&#127891;</div>
+        <div class="tc-name">Organizacion de Evento</div>
+        <div class="tc-code oe">OE-YYYY-NNN</div>
+        <div class="tc-fields"><code>[Evento]</code> <code>[Datos]</code> <code>[Monto]</code><br><code>[Numero]</code> <code>[Proyecto]</code> <code>[LGAC]</code></div>
+        <div class="tc-arr">Abrir &rarr;</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec-feat" id="funciones">
+  <div class="wrap">
+    <div class="rv">
+      <div class="tag tag-t">Funcionalidades completas</div>
+      <h2 class="s-h dk">Todo en un solo archivo.<br>Listo para operar.</h2>
+      <p class="s-p dk">Sin instalacion de servidor. Funciona en cualquier navegador moderno y sincroniza automaticamente con Google Workspace.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat rv d1">
+        <div class="feat-ico" style="background:rgba(212,134,10,.08)">&#128206;</div>
+        <div class="feat-h">Adjuntos por arrastre</div>
+        <div class="feat-p">Zona drag-and-drop en cada formulario. PDF, Word, Excel e imagenes hasta 10 MB. Maximo 8 archivos por tramite. Se envian junto con el formulario.</div>
+        <div class="pill p-hot">Nuevo</div>
+      </div>
+      <div class="feat rv d2">
+        <div class="feat-ico" style="background:rgba(27,95,168,.08)">&#128231;</div>
+        <div class="feat-h">Envio automatico a Teams</div>
+        <div class="feat-p">Al registrar, el sistema envia el formulario completo y los archivos adjuntos directamente a CtTramites2026 via el canal de Teams del CITRO.</div>
+        <div class="pill p-hot">Nuevo</div>
+      </div>
+      <div class="feat rv d3">
+        <div class="feat-ico" style="background:rgba(26,122,74,.08)">&#9989;</div>
+        <div class="feat-h">Acuse de recibo</div>
+        <div class="feat-p">Pantalla de confirmacion con folio asignado, datos del tramite y lista de archivos enviados. Imprimible. CC automatico al correo del solicitante.</div>
+        <div class="pill p-hot">Nuevo</div>
+      </div>
+      <div class="feat rv d1">
+        <div class="feat-ico" style="background:rgba(10,128,112,.08)">&#9729;&#65039;</div>
+        <div class="feat-h">Google Drive automatico</div>
+        <div class="feat-p">Cada tramite genera copia HTML del documento en Drive organizada por tipo y ano. Enlace directo desde la tabla de tramites.</div>
+        <div class="pill p-new">v3</div>
+      </div>
+      <div class="feat rv d2">
+        <div class="feat-ico" style="background:rgba(27,128,80,.08)">&#128202;</div>
+        <div class="feat-h">Google Sheets central</div>
+        <div class="feat-p">Cada tramite se registra en la hoja de seguimiento CITRO en tiempo real. Accesible para administradores desde cualquier dispositivo.</div>
+        <div class="pill p-new">v3</div>
+      </div>
+      <div class="feat rv d3">
+        <div class="feat-ico" style="background:rgba(107,53,168,.08)">&#128274;</div>
+        <div class="feat-h">Panel de administracion</div>
+        <div class="feat-p">Vista exclusiva para correos autorizados. Ver todos los tramites, cambiar estado, abrir Drive, gestionar admins, exportar CSV y resumen diario por correo.</div>
+        <div class="pill p-adm">Solo admins</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="sec-flow" id="flujo">
+  <div class="wrap">
+    <div class="rv">
+      <div class="tag tag-t">Flujo del tramite</div>
+      <h2 class="s-h dk">Del formulario<br>al acuse en 5 pasos</h2>
+      <p class="s-p dk">El proceso completo, desde que el estudiante llena el formulario hasta que la coordinacion lo recibe con todos los adjuntos.</p>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-step rv d1">
+        <div class="flow-n">01</div>
+        <div class="flow-h">Iniciar sesion</div>
+        <p class="flow-p">Google o UV. El sistema detecta si el correo tiene permisos de admin.</p>
+      </div>
+      <div class="flow-step rv d2">
+        <div class="flow-n">02</div>
+        <div class="flow-h">Elegir tramite</div>
+        <p class="flow-p">PG, SC, PR u OE. Campos especificos segun la plantilla oficial.</p>
+      </div>
+      <div class="flow-step rv d3">
+        <div class="flow-n">03</div>
+        <div class="flow-h">Adjuntar archivos</div>
+        <p class="flow-p">Arrastra PDF, Word, imagenes. Hasta 8 archivos de 10 MB cada uno.</p>
+      </div>
+      <div class="flow-step rv d4">
+        <div class="flow-n">04</div>
+        <div class="flow-h">Enviar</div>
+        <p class="flow-p">Folio asignado, guardado en Drive y Sheets, correo a CtTramites2026 con adjuntos.</p>
+      </div>
+      <div class="flow-step rv d5">
+        <div class="flow-n">05</div>
+        <div class="flow-h">Acuse de recibo</div>
+        <p class="flow-p">Pantalla de confirmacion con folio. Imprimible. CC al solicitante.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section class="sec-admin" id="admin">
+  <div class="wrap">
+    <div class="admin-lay">
+      <div class="rv">
+        <div class="tag tag-g">Panel de administracion</div>
+        <h2 class="s-h wh">Control total<br>para coordinacion CITRO</h2>
+        <p class="s-p wh">Acceso exclusivo con Google Sign-In. Solo los correos autorizados ven esta seccion del sistema.</p>
+        <div class="admin-items">
+          <div class="ai"><div class="ai-chk">&#10003;</div>Todos los tramites de todos los usuarios en una tabla</div>
+          <div class="ai"><div class="ai-chk">&#10003;</div>Cambiar estado: Pendiente &rarr; En revision &rarr; Completado</div>
+          <div class="ai"><div class="ai-chk">&#10003;</div>Abrir el documento en Drive directo desde la tabla</div>
+          <div class="ai"><div class="ai-chk">&#10003;</div>Agregar o quitar administradores sin tocar el codigo</div>
+          <div class="ai"><div class="ai-chk">&#10003;</div>Exportar registro completo a CSV con un clic</div>
+          <div class="ai"><div class="ai-chk">&#10003;</div>Resumen automatico diario por correo a las 8 AM</div>
+        </div>
+      </div>
+      <div class="mock-ui rv d2">
+        <div class="mu-hd">
+          <div class="mu-ttl">&#128274; Panel de Administracion</div>
+          <div class="mu-badge">ADMIN</div>
+        </div>
+        <div class="mu-body">
+          <div class="mu-row hdr"><span>Folio</span><span>Solicitante</span><span>Estado</span><span>Drive</span></div>
+          <div class="mu-row"><span class="mu-folio">SC-2025-012</span><span>Torres, M.</span><span class="mu-st st-r">Revision</span><span class="mu-dr">&#128196;</span></div>
+          <div class="mu-row"><span class="mu-folio">PG-2025-031</span><span>Garcia, A.</span><span class="mu-st st-p">Pendiente</span><span class="mu-dr">&#128196;</span></div>
+          <div class="mu-row"><span class="mu-folio">OE-2025-007</span><span>Lopez, C.</span><span class="mu-st st-d">Completado</span><span class="mu-dr">&#128196;</span></div>
+          <div class="mu-row"><span class="mu-folio">PR-2025-019</span><span>Reyes, S.</span><span class="mu-st st-p">Pendiente</span><span class="mu-dr">&#128196;</span></div>
+          <div class="mu-foot">
+            <div class="mu-chip mc-t">4 tramites hoy</div>
+            <div class="mu-chip mc-g">&#8659; CSV</div>
+            <div class="mu-chip mc-g">&#8593; Actualizar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="sec-cta">
+  <div class="cta-in">
+    <h2>Listo para operar ahora mismo</h2>
+    <p>Sin instalacion adicional. Abra el HTML en cualquier navegador. Para Drive, Sheets y envio de correo configure el backend GAS siguiendo la guia incluida.</p>
+    <div class="cta-row">
+      <a class="btn btn-solid" href="CITRO_App.html" style="font-size:.9rem;padding:14px 32px">&#8594; Abrir CITRO-Formularios</a>
+      <a class="btn btn-out" href="SETUP_Google.md" style="font-size:.84rem">&#128196; Guia Drive + Sheets + Correo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">
+    <div class="logo-mark">C</div>
+    <span style="font-size:.79rem;color:rgba(255,255,255,.28);font-weight:500">CITRO-Formularios v4.1</span>
+  </div>
+  <div class="foot-ctr">Centro de Investigaciones Tropicales &bull; Universidad Veracruzana &bull; Xalapa, Veracruz</div>
+  <div class="foot-mono">2025</div>
+</footer>
+
+<script>
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.rv').forEach(function(el){ obs.observe(el); });
+
+  var secs = document.querySelectorAll('[id]');
+  var links = document.querySelectorAll('.nav-a');
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY + 90;
+    secs.forEach(function(s){
+      if(y >= s.offsetTop && y < s.offsetTop + s.offsetHeight){
+        links.forEach(function(a){
+          a.classList.toggle('on', a.getAttribute('href') === '#' + s.id);
+        });
+      }
+    });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
