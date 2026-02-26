@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
+<link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>CITRO — Sistema de Trámites v3</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -24,7 +25,7 @@
 html{font-size:14px;height:100%}
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--surf);color:var(--text);height:100%;display:flex;overflow:hidden}
 
-/* -- LOGIN OVERLAY -- */
+/* ── LOGIN OVERLAY ── */
 .login-overlay{
   position:fixed;inset:0;z-index:9999;
   background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,#1A3A6E 100%);
@@ -59,7 +60,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--surf);color:var(--t
   font-size:.78rem;margin-top:12px;display:none;
 }
 
-/* -- USER CHIP (topbar) -- */
+/* ── USER CHIP (topbar) ── */
 .user-chip{
   display:flex;align-items:center;gap:8px;
   background:rgba(10,122,110,.1);border:1px solid rgba(10,122,110,.2);
@@ -79,7 +80,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--surf);color:var(--t
   background:var(--amber);color:var(--navy);padding:1px 5px;border-radius:3px;
 }
 
-/* -- SYNC STATUS -- */
+/* ── SYNC STATUS ── */
 .sync-indicator{
   display:flex;align-items:center;gap:6px;
   font-size:.72rem;padding:4px 10px;border-radius:5px;
@@ -92,7 +93,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--surf);color:var(--t
 .sync-dot.off{background:var(--border)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* -- SIDEBAR -- */
+/* ── SIDEBAR ── */
 .sidebar{
   width:var(--sidebar);min-width:var(--sidebar);background:var(--navy);
   display:flex;flex-direction:column;height:100vh;overflow:hidden;
@@ -113,7 +114,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--surf);color:var(--t
 .sb-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 0}
 .sb-footer{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,.07);font-size:.72rem;color:rgba(255,255,255,.28);line-height:1.5}
 
-/* -- MAIN -- */
+/* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .topbar{height:var(--header);min-height:var(--header);background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 20px;box-shadow:0 1px 4px rgba(13,31,60,.06);z-index:5}
 .topbar-title{font-size:1rem;font-weight:600;color:var(--text);flex:1}
@@ -124,7 +125,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--surf);color:var(--t
 .screen.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* -- COMPONENTS -- */
+/* ── COMPONENTS ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:var(--white);border-radius:var(--r2);padding:16px;box-shadow:var(--sh);border-top:3px solid var(--border);display:flex;flex-direction:column;gap:4px;transition:all .15s}
 .stat-card:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
@@ -265,7 +266,7 @@ tbody td{padding:9px 12px;font-size:.8rem;vertical-align:middle}
 .cloud-status.off{background:var(--surf);color:var(--muted)}
 .cloud-status.syncing{background:#FFF3CD;color:var(--amber)}
 
-/* -- ADJUNTOS -- */
+/* ── ADJUNTOS ── */
 .attach-section-wrap{
   background:rgba(10,122,110,.04);border:1px solid rgba(10,122,110,.18);
   border-radius:var(--r2);padding:16px;margin-top:2px;
@@ -301,7 +302,7 @@ tbody td{padding:9px 12px;font-size:.8rem;vertical-align:middle}
 }
 .attach-item-rm:hover{background:rgba(192,57,43,.2)}
 
-/* -- ACUSE DE RECIBO -- */
+/* ── ACUSE DE RECIBO ── */
 .acuse-overlay{
   position:fixed;inset:0;z-index:10000;
   background:rgba(7,17,31,.85);backdrop-filter:blur(12px);
@@ -1005,12 +1006,21 @@ function loadData()   { try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)
 function saveData(d)  { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
 function loadFolios() { try{ return JSON.parse(localStorage.getItem(FOLIO_KEY)||'{"PG":0,"SC":0,"PR":0,"OE":0}'); }catch{ return {PG:0,SC:0,PR:0,OE:0}; } }
 function saveFolios(f){ localStorage.setItem(FOLIO_KEY, JSON.stringify(f)); }
-function loadCfg()    { try{ return JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch{ return {}; } }
+function loadCfg() {
+  try {
+    var saved = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
+    if(DEFAULT_GAS_URL) saved.gasUrl = DEFAULT_GAS_URL;
+    if(DEFAULT_SECRET)  saved.secret  = DEFAULT_SECRET;
+    return saved;
+  } catch(e) { return {}; }
+}
 function saveCfg(c)   { localStorage.setItem(CFG_KEY, JSON.stringify(c)); }
 
 let data       = loadData();
 let folios     = loadFolios();
 let cfg        = loadCfg();
+if(DEFAULT_GAS_URL) cfg.gasUrl=DEFAULT_GAS_URL;
+if(DEFAULT_SECRET)  cfg.secret=DEFAULT_SECRET;
 let currentUser= null;  // { email, name, picture, isAdmin }
 let adminData  = [];    // datos del servidor (solo admins)
 let isOnline   = false;
@@ -1097,8 +1107,8 @@ function finishLogin(user) {
   var av = document.getElementById('userAvatar');
   av.textContent = user.name.charAt(0).toUpperCase();
 
-  var cfgNav=document.getElementById('nav-config-item');
-  if(cfgNav) cfgNav.style.display=user.isAdmin?'':'none';
+  var _cfgNav=document.getElementById('nav-config-item');
+  if(_cfgNav) _cfgNav.style.display=user.isAdmin?'':'none';
   if(user.isAdmin) {
     document.getElementById('userAdminBadge').style.display = 'inline';
     document.querySelectorAll('.admin-only').forEach(function(el){ el.classList.add('show'); });
@@ -1161,7 +1171,7 @@ async function syncToDrive(record) {
   try {
     const r = await fetch(gasUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'register',
         secret,
@@ -1257,7 +1267,7 @@ function nav(el) {
   if(sid==='s-admin')    refreshAdminData();
   if(sid==='s-config'){
     if(!currentUser||!currentUser.isAdmin){
-      showAlert('pg','error','Acceso restringido — solo administradores.');
+      showAlert('pg','error','Acceso restringido: solo administradores.');
       document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
       document.getElementById('s-inicio').classList.add('active');
       return;
@@ -1671,7 +1681,10 @@ function acuseImprimir() {
   w.document.close();
   setTimeout(function(){
     if(typeof html2pdf!=='undefined'){
-      html2pdf().set({margin:[12,15,12,15],filename:folio+'_acuse_CITRO.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(w.document.body).save().then(function(){w.close();});
+      html2pdf().set({margin:[12,15,12,15],filename:folio+'_acuse_CITRO.pdf',
+        image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},
+        jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}})
+        .from(w.document.body).save().then(function(){w.close();});
     } else { w.print(); }
   },350);
 }
@@ -1781,7 +1794,7 @@ async function submitForm(type) {
         printHtml: buildPrintHTML(record, type),
         attachments: attachData
       };
-      var resp = await fetch(gasUrl, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      var resp = await fetch(gasUrl, {method:'POST', headers:{'Content-Type': 'text/plain'}, body: JSON.stringify(payload)});
       var j = await resp.json();
       if(j.ok){ emailStatus = {citro: true, solicitante: true, via: 'GAS'}; }
     } catch(e){ /* fallback to mailto in acuse */ }
@@ -1872,7 +1885,7 @@ async function syncStatusUpdate(folio, estado) {
   const secret=cfg.secret||DEFAULT_SECRET;
   if(!gasUrl) return;
   try {
-    await fetch(gasUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'updateStatus',secret,folio,estado,requestedBy:currentUser?currentUser.email:''})});
+    await fetch(gasUrl,{method:'POST',headers:{'Content-Type': 'text/plain'},body:JSON.stringify({action:'updateStatus',secret,folio,estado,requestedBy:currentUser?currentUser.email:''})});
   } catch{}
 }
 
@@ -1973,7 +1986,7 @@ async function addAdmin() {
   const secret=cfg.secret||DEFAULT_SECRET;
   if(!gasUrl){ showAdminMsg('error','Configure el URL del servidor primero'); return; }
   try {
-    const r=await fetch(gasUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'addAdmin',secret,email,nombre,requestedBy:currentUser.email})});
+    const r=await fetch(gasUrl,{method:'POST',headers:{'Content-Type': 'text/plain'},body:JSON.stringify({action:'addAdmin',secret,email,nombre,requestedBy:currentUser.email})});
     const j=await r.json();
     if(j.ok){ showAdminMsg('success',`OK ${email} agregado como administrador`); document.getElementById('new-admin-email').value=''; document.getElementById('new-admin-nombre').value=''; refreshAdminData(true); }
     else showAdminMsg('error', j.error||'Error al agregar');
@@ -1985,7 +1998,7 @@ async function removeAdmin(email) {
   const gasUrl=cfg.gasUrl||DEFAULT_GAS_URL;
   const secret=cfg.secret||DEFAULT_SECRET;
   try {
-    const r=await fetch(gasUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'removeAdmin',secret,email,requestedBy:currentUser.email})});
+    const r=await fetch(gasUrl,{method:'POST',headers:{'Content-Type': 'text/plain'},body:JSON.stringify({action:'removeAdmin',secret,email,requestedBy:currentUser.email})});
     const j=await r.json();
     if(j.ok){ showAdminMsg('success',`OK ${email} removido`); refreshAdminData(true); }
     else showAdminMsg('error',j.error||'Error al remover');
@@ -2043,8 +2056,8 @@ function renderDashboard() {
   // Sync card
   const syncEl=document.getElementById('sync-detail');
   const gasUrl=cfg.gasUrl||DEFAULT_GAS_URL;
-  if(gasUrl) syncEl.innerHTML=`<span style="color:var(--green)">● Drive activo</span>  -  Los nuevos trámites se guardan automáticamente en Drive y en la hoja de seguimiento CITRO.`;
-  else syncEl.innerHTML='<span style="color:var(--muted)">☁ Configure el URL del servidor en <strong>Configuración</strong> para activar Drive.</span>';
+  if(syncEl && gasUrl) syncEl.innerHTML=`<span style="color:var(--green)">● Drive activo</span>  -  Los nuevos trámites se guardan automáticamente en Drive y en la hoja de seguimiento CITRO.`;
+  else if(syncEl) syncEl.innerHTML='<span style="color:var(--muted)">☁ Configure el URL del servidor en <strong>Configuración</strong> para activar Drive.</span>';
 }
 
 function updateAllCounters() {
@@ -2134,7 +2147,7 @@ function printForm(type) {
   printFormFromRecord(r);
 }
 
-function printFormFromRecord(r) { descargarCartaPDF(r,r.type); }
+function printFormFromRecord(r) { descargarCartaPDF(r, r.type); }
 
 function toggleUserMenu() {}
 
@@ -2153,7 +2166,6 @@ function init() {
   // Init Google Sign-In
   initGoogleSignIn();
 }
-// -- buildPrintHTML — carta oficial con membrete UV --------------------------
 function buildPrintHTML(record,type){
   var r=record||{};
   var today=new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
@@ -2163,7 +2175,7 @@ function buildPrintHTML(record,type){
   if(type==='pg'){body='<p><strong>Tipo:</strong> '+(r.tipo||'')+'</p><p><strong>Urgencia:</strong> '+(r.urgencia||'Normal')+'</p><p><strong>Descripcion:</strong></p><p>'+(r.descripcion||'')+'</p>'+(r.obs?'<p><strong>Obs:</strong> '+r.obs+'</p>':'');}
   else if(type==='sc'){body='<p><strong>Lugar(es):</strong></p><p>'+(r.lugares||'')+'</p><p><strong>Actividades:</strong></p><p>'+(r.actividades||'')+'</p><p><strong>Salida:</strong> '+(r.fecha_salida||'')+'&nbsp;&nbsp;<strong>Regreso:</strong> '+(r.fecha_regreso||'')+'</p>'+(r.participantes?'<p><strong>Participantes:</strong> '+r.participantes+'</p>':'')+(r.transporte?'<p><strong>Transporte:</strong> '+r.transporte+'</p>':'');}
   else if(type==='pr'){body='<p><strong>Actividad:</strong> '+(r.actividad||'')+'</p><p><strong>Recurso:</strong> '+(r.tipo_recurso||'')+'</p>'+(r.monto?'<p><strong>Monto:</strong> $'+parseFloat(r.monto||0).toFixed(2)+' MXN</p>':'')+(r.proyecto?'<p><strong>Proyecto:</strong> '+r.proyecto+'</p>':'')+'<p><strong>Justificacion:</strong></p><p>'+(r.justificacion||'')+'</p>';}
-  else if(type==='oe'){body='<p><strong>Evento:</strong> '+(r.nombre_evento||'')+'</p><p><strong>Fecha:</strong> '+(r.fecha_evento||'')+'&nbsp;&nbsp;<strong>Sede:</strong> '+(r.sede||'')+'</p><p><strong>Presupuesto:</strong> $'+parseFloat(r.presupuesto||0).toFixed(2)+' MXN</p><p><strong>Asistentes:</strong> '+(r.asistentes||'')+'</p><p><strong>Proyecto:</strong> '+(r.proyecto||'')+'</p><p><strong>LGAC/PLADEA:</strong></p><p>'+(r.lgac||'')+'</p>';}
+  else if(type==='oe'){body='<p><strong>Evento:</strong> '+(r.nombre_evento||'')+'</p><p><strong>Fecha:</strong> '+(r.fecha_evento||'')+'&nbsp;&nbsp;<strong>Sede:</strong> '+(r.sede||'')+'</p><p><strong>Presupuesto:</strong> $'+parseFloat(r.presupuesto||0).toFixed(2)+' MXN</p><p><strong>Asistentes:</strong> '+(r.asistentes||'')+'</p><p><strong>Proyecto:</strong> '+(r.proyecto||'')+'</p><p><strong>LGAC:</strong></p><p>'+(r.lgac||'')+'</p>';}
   return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>CITRO-'+r.folio+'</title>'
     +'<style>body{font-family:"Times New Roman",serif;font-size:12pt;line-height:1.65;margin:2cm;color:#111}'
     +'p{margin-bottom:8px}.hdr{text-align:center;border-bottom:2px solid #0D1F3C;padding-bottom:12px;margin-bottom:18px}'
@@ -2173,7 +2185,7 @@ function buildPrintHTML(record,type){
     +'@media print{body{margin:1.5cm}}</style></head><body>'
     +'<div class="hdr"><div style="font-size:9pt;text-transform:uppercase;letter-spacing:.08em;color:#5A6880">Centro de Investigaciones Tropicales</div>'
     +'<div style="font-size:15pt;font-weight:bold;color:#0D1F3C">UNIVERSIDAD VERACRUZANA</div>'
-    +'<div style="font-size:9pt;color:#5A6880">Xalapa, Veracruz &mdash; '+today+'</div></div>'
+    +'<div style="font-size:9pt;color:#5A6880">Xalapa, Veracruz - '+today+'</div></div>'
     +'<div style="text-align:right;margin-bottom:14px"><span class="fol">Folio: '+r.folio+'</span></div>'
     +'<p><strong>Asunto:</strong> '+(r.label||r.tipo||'Solicitud')+'</p>'
     +'<p>A quien corresponda:</p>'
@@ -2182,10 +2194,9 @@ function buildPrintHTML(record,type){
     +'<p style="margin-top:16px">Atentamente,<br><strong>'+(r.apellidos||'')+', '+(r.nombres||'')+'</strong></p>'
     +'<div class="firma"><div class="fl">Firma del solicitante<br><span style="color:#888">'+(r.apellidos||'')+', '+(r.nombres||'')+'</span></div>'
     +'<div class="fl">Vo.Bo. Direccion CITRO</div></div>'
-    +'<div style="margin-top:16px;text-align:center;font-size:8pt;color:#aaa;border-top:1px solid #eee;padding-top:8px">CITRO v5 &mdash; Folio '+(r.folio||'')+'</div>'
+    +'<div style="margin-top:16px;text-align:center;font-size:8pt;color:#aaa;border-top:1px solid #eee;padding-top:8px">CITRO v5 - Folio '+(r.folio||'')+'</div>'
     +'</body></html>';
 }
-
 function descargarCartaPDF(record,type){
   var html=buildPrintHTML(record,type);
   var folio=(record&&record.folio)?record.folio:'CITRO';
@@ -2198,7 +2209,6 @@ function descargarCartaPDF(record,type){
     } else {w.print();}
   },400);
 }
-
 function acuseDescargarCarta(){
   if(!_lastAcuseRecord)return;
   var btn=document.getElementById('btn-download-carta');
@@ -2206,7 +2216,6 @@ function acuseDescargarCarta(){
   descargarCartaPDF(_lastAcuseRecord,_lastAcuseType||_lastAcuseRecord.type);
   setTimeout(function(){if(btn){btn.disabled=false;btn.innerHTML='&#128196; Carta PDF';}},3000);
 }
-
 
 init();
 </script>
